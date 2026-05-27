@@ -7,12 +7,12 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useConfetti } from "./confetti-context";
 
 const NAV_ITEMS = [
-  { href: "/",            label: "Hub",         icon: Home,     emoji: "🏠", bg: "from-pink-500 to-rose-500"       },
-  { href: "/animate",     label: "Studio",       icon: Palette,  emoji: "🎨", bg: "from-purple-500 to-pink-500"     },
-  { href: "/robotics",    label: "Robotics",     icon: Rocket,   emoji: "🚀", bg: "from-blue-500 to-cyan-500"       },
-  { href: "/worlds",      label: "Worlds",       icon: Globe2,   emoji: "🌍", bg: "from-green-500 to-emerald-500"   },
-  { href: "/games",       label: "Coding",       icon: Gamepad2, emoji: "🎮", bg: "from-orange-500 to-yellow-500"   },
-  { href: "/achievements",label: "Trophies",     icon: Trophy,   emoji: "🏆", bg: "from-yellow-500 to-amber-500"    },
+  { href: "/",            label: "Hub",      emoji: "🏠", bg: "from-pink-500 to-rose-500"     },
+  { href: "/animate",     label: "Studio",   emoji: "🎨", bg: "from-purple-500 to-pink-500"   },
+  { href: "/robotics",    label: "Robotics", emoji: "🚀", bg: "from-blue-500 to-cyan-500"     },
+  { href: "/worlds",      label: "Worlds",   emoji: "🌍", bg: "from-green-500 to-emerald-500" },
+  { href: "/games",       label: "Coding",   emoji: "🎮", bg: "from-orange-500 to-yellow-500" },
+  { href: "/achievements",label: "Trophies", emoji: "🏆", bg: "from-yellow-500 to-amber-500"  },
 ];
 
 const FUN_FACTS = [
@@ -28,6 +28,16 @@ const FUN_FACTS = [
   "Octopuses have three hearts and blue blood!",
 ];
 
+// ── Reusable logo — one word, two colours, no gap ─────────────────────────────
+function KidsPlore({ size = "text-2xl" }: { size?: string }) {
+  return (
+    <span className={`font-extrabold tracking-tight ${size}`} style={{ whiteSpace: "nowrap" }}>
+      <span style={{ background: "linear-gradient(135deg,#FF6B9D,#FF3366)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Kids</span><span style={{ background: "linear-gradient(135deg,#00C9D4,#0099FF)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Plore</span>
+    </span>
+  );
+}
+
+// ── Layout ────────────────────────────────────────────────────────────────────
 export function Layout({ children }: { children: ReactNode }) {
   const [location] = useLocation();
   const [isOpen, setIsOpen] = useState(false);
@@ -35,7 +45,6 @@ export function Layout({ children }: { children: ReactNode }) {
   const [factVisible, setFactVisible] = useState(true);
   const { burst } = useConfetti();
 
-  // Rotate fun fact every 8 seconds
   useEffect(() => {
     const t = setInterval(() => {
       setFactVisible(false);
@@ -58,38 +67,15 @@ export function Layout({ children }: { children: ReactNode }) {
       <header className="sticky top-0 z-50 w-full border-b-2 border-b-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 shadow-sm">
         <div className="container flex h-16 items-center justify-between gap-4">
 
-          {/* Logo — KidsPlore as one word */}
+          {/* Logo */}
           <Link
             href="/"
             onClick={handleLogoBurst}
-            className="flex items-center font-extrabold text-2xl tracking-tight select-none shrink-0 group"
+            className="flex items-center select-none shrink-0 group"
             title="Click for a surprise!"
           >
-            <span
-              style={{
-                background: "linear-gradient(135deg, #FF6B9D, #FF3366)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                display: "inline-block",
-                transition: "transform 0.2s",
-              }}
-              className="group-hover:scale-105 inline-block"
-            >
-              Kids
-            </span>
-            <span
-              style={{
-                background: "linear-gradient(135deg, #00C9D4, #0099FF)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                display: "inline-block",
-                transition: "transform 0.2s",
-              }}
-              className="group-hover:scale-105 inline-block"
-            >
-              Plore
-            </span>
-            <Sparkles className="w-5 h-5 ml-1 text-yellow-400 opacity-0 group-hover:opacity-100 transition-opacity" />
+            <KidsPlore />
+            <Sparkles className="w-4 h-4 ml-1 text-yellow-400 opacity-0 group-hover:opacity-100 transition-opacity" />
           </Link>
 
           {/* Desktop Nav */}
@@ -108,9 +94,7 @@ export function Layout({ children }: { children: ReactNode }) {
                       : "text-muted-foreground hover:bg-muted hover:text-foreground"
                   )}
                 >
-                  <span className={cn("text-base transition-transform duration-200", isActive ? "" : "group-hover:scale-110")}>
-                    {item.emoji}
-                  </span>
+                  <span className="text-base">{item.emoji}</span>
                   {item.label}
                   {isActive && (
                     <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-white/60" />
@@ -129,12 +113,8 @@ export function Layout({ children }: { children: ReactNode }) {
                 </Button>
               </SheetTrigger>
               <SheetContent side="right" className="w-[280px] p-0 overflow-y-auto">
-                {/* Mobile nav header */}
                 <div className="p-6 pb-4 border-b border-border/40">
-                  <div className="font-extrabold text-2xl">
-                    <span style={{ background:"linear-gradient(135deg,#FF6B9D,#FF3366)", WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent" }}>Kids</span>
-                    <span style={{ background:"linear-gradient(135deg,#00C9D4,#0099FF)", WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent" }}>Plore</span>
-                  </div>
+                  <KidsPlore size="text-2xl" />
                   <p className="text-xs text-muted-foreground mt-1 font-medium">Your STEM adventure awaits!</p>
                 </div>
                 <nav className="flex flex-col gap-2 p-4">
@@ -158,7 +138,6 @@ export function Layout({ children }: { children: ReactNode }) {
                     );
                   })}
                 </nav>
-                {/* Fun fact in mobile drawer */}
                 <div className="m-4 p-4 bg-muted/50 rounded-2xl">
                   <div className="text-xs font-bold text-primary mb-1 uppercase tracking-wider">Fun Fact</div>
                   <p className="text-sm text-muted-foreground leading-relaxed">{FUN_FACTS[factIndex]}</p>
@@ -169,7 +148,7 @@ export function Layout({ children }: { children: ReactNode }) {
         </div>
       </header>
 
-      {/* ── Fun fact ticker (desktop) ── */}
+      {/* ── Fun fact ticker ── */}
       <div className="hidden md:flex items-center justify-center gap-3 bg-gradient-to-r from-primary/10 via-accent/10 to-secondary/10 border-b border-border/30 py-1.5 px-4 overflow-hidden">
         <span className="text-xs font-extrabold text-primary uppercase tracking-widest shrink-0">STEM Fact</span>
         <span className="text-yellow-500">✦</span>
@@ -191,18 +170,15 @@ export function Layout({ children }: { children: ReactNode }) {
 
       {/* ── Footer ── */}
       <footer className="border-t-2 border-border/40 bg-gradient-to-r from-primary/5 via-accent/5 to-secondary/5">
-        {/* Zone quick links */}
         <div className="container max-w-7xl mx-auto px-4 md:px-8 py-6">
+
+          {/* Zone quick links */}
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3 mb-6">
             {NAV_ITEMS.map(item => (
               <Link
                 key={item.href}
                 href={item.href}
-                className={cn(
-                  "flex flex-col items-center gap-1.5 p-3 rounded-2xl font-bold text-xs text-center",
-                  "bg-white/60 hover:bg-white transition-all hover:-translate-y-0.5 border border-border/30 shadow-sm",
-                  "group"
-                )}
+                className="flex flex-col items-center gap-1.5 p-3 rounded-2xl font-bold text-xs text-center bg-white/60 hover:bg-white transition-all hover:-translate-y-0.5 border border-border/30 shadow-sm group"
               >
                 <span className="text-2xl group-hover:scale-110 transition-transform duration-200">{item.emoji}</span>
                 {item.label}
@@ -212,10 +188,7 @@ export function Layout({ children }: { children: ReactNode }) {
 
           {/* Bottom bar */}
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-border/30">
-            <div className="flex items-center gap-2 font-extrabold text-xl">
-              <span style={{ background:"linear-gradient(135deg,#FF6B9D,#FF3366)", WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent" }}>Kids</span>
-              <span style={{ background:"linear-gradient(135deg,#00C9D4,#0099FF)", WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent" }}>Plore</span>
-            </div>
+            <KidsPlore size="text-xl" />
 
             <div className="flex flex-col sm:flex-row items-center gap-2 text-sm text-muted-foreground font-medium">
               <span>Your STEM adventure playground</span>
