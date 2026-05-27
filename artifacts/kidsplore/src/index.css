@@ -129,5 +129,63 @@
   }
   body {
     @apply font-sans antialiased bg-background text-foreground;
+    scroll-behavior: smooth;
   }
 }
+
+/* ── Page transition ───────────────────────────────────────────────── */
+@keyframes kidsplore-page-in {
+  from { opacity: 0; transform: translateY(14px) scale(0.985); }
+  to   { opacity: 1; transform: translateY(0)   scale(1);     }
+}
+
+.kidsplore-page {
+  animation: kidsplore-page-in 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ── Nav bounce on active ──────────────────────────────────────────── */
+@keyframes nav-pop {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.12) translateY(-3px); }
+  70%  { transform: scale(0.96) translateY(1px); }
+  100% { transform: scale(1) translateY(0); }
+}
+
+/* ── Floating emoji drift ──────────────────────────────────────────── */
+@keyframes float-up {
+  0%   { transform: translateY(0)   rotate(0deg);   opacity: 0.12; }
+  50%  { transform: translateY(-40px) rotate(8deg); opacity: 0.18; }
+  100% { transform: translateY(-80px) rotate(-4deg); opacity: 0; }
+}
+
+/* ── Wiggle (used on interactive elements) ─────────────────────────── */
+@keyframes wiggle {
+  0%, 100% { transform: rotate(-3deg); }
+  50%       { transform: rotate(3deg); }
+}
+
+/* ── Soft pulse glow ───────────────────────────────────────────────── */
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 107, 157, 0); }
+  50%       { box-shadow: 0 0 18px 6px rgba(255, 107, 157, 0.25); }
+}
+
+/* ── Score pop ─────────────────────────────────────────────────────── */
+@keyframes score-pop {
+  0%   { transform: scale(0.5); opacity: 0; }
+  60%  { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(1);   opacity: 1; }
+}
+
+.animate-score-pop { animation: score-pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+.animate-wiggle    { animation: wiggle 0.5s ease-in-out infinite; }
+.animate-glow      { animation: glow-pulse 2.5s ease-in-out infinite; }
+
+/* ── Scrollbar styling ─────────────────────────────────────────────── */
+::-webkit-scrollbar       { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: hsl(var(--primary) / 0.3); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: hsl(var(--primary) / 0.5); }
+
+/* ── Focus ring ────────────────────────────────────────────────────── */
+:focus-visible { outline: 2px solid hsl(var(--primary)); outline-offset: 3px; border-radius: 6px; }

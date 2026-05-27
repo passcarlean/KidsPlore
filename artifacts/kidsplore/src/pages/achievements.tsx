@@ -1,8 +1,9 @@
 import { useListAchievements, useGetProgress, useListScores } from "@workspace/api-client-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Trophy, Star, Medal, Crown } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { iconToEmoji } from "@/lib/icon-map";
 
 const PLAYER_NAME = "SpaceExplorer"; // Hardcoded for demo
 
@@ -76,7 +77,7 @@ export function Achievements() {
             ) : achievements?.map((ach) => (
               <div key={ach.id} className="bg-card border-4 border-muted p-4 rounded-2xl flex gap-4 items-center hover:border-primary/50 transition-colors">
                 <div className="text-5xl bg-muted/50 w-20 h-20 flex items-center justify-center rounded-2xl">
-                  {ach.icon}
+                  {iconToEmoji(ach.icon)}
                 </div>
                 <div>
                   <h4 className="font-bold text-lg leading-tight">{ach.title}</h4>
