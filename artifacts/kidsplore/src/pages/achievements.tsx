@@ -8,7 +8,7 @@ const PLAYER_NAME = "SpaceExplorer"; // Hardcoded for demo
 
 export function Achievements() {
   const { data: achievements, isLoading: achLoading } = useListAchievements();
-  const { data: progress, isLoading: progLoading } = useGetProgress({ playerName: PLAYER_NAME }, { query: { enabled: true } });
+  const { data: progress, isLoading: progLoading } = useGetProgress({ playerName: PLAYER_NAME });
   const { data: scores, isLoading: scoresLoading } = useListScores({ limit: 10 });
 
   const currentLevel = progress?.level || 1;

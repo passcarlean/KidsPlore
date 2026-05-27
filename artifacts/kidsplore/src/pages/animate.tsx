@@ -18,10 +18,10 @@ export function AnimateStudio() {
   const [isDrawing, setIsDrawing] = useState(false);
   const [isEraser, setIsEraser] = useState(false);
   const [fps, setFps] = useState([5]);
-  const playRef = useRef<NodeJS.Timeout>();
+  const playRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
   const { toast } = useToast();
-  const { data: progress } = useGetProgress({ playerName: "SpaceExplorer" }, { query: { enabled: true } });
+  const { data: progress } = useGetProgress({ playerName: "SpaceExplorer" });
   const saveProgress = useSaveProgress();
 
   useEffect(() => {
