@@ -3,25 +3,20 @@ info:
   # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: KidsPlore API
+  description: API specification
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
-  - name: scores
-    description: Game scores and leaderboard
-  - name: achievements
-    description: Player achievements and badges
-  - name: progress
-    description: Player progress tracking
 paths:
   /healthz:
     get:
       operationId: healthCheck
       tags: [health]
       summary: Health check
+      description: Returns server health status
       responses:
         "200":
           description: Healthy
@@ -29,129 +24,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
-
-  /scores:
-    get:
-      operationId: listScores
-      tags: [scores]
-      summary: Get top scores leaderboard
-      parameters:
-        - name: game
-          in: query
-          required: false
-          schema:
-            type: string
-        - name: limit
-          in: query
-          required: false
-          schema:
-            type: integer
-      responses:
-        "200":
-          description: List of top scores
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Score"
-    post:
-      operationId: submitScore
-      tags: [scores]
-      summary: Submit a game score
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ScoreInput"
-      responses:
-        "201":
-          description: Score submitted
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Score"
-
-  /scores/stats:
-    get:
-      operationId: getScoreStats
-      tags: [scores]
-      summary: Get overall score statistics across all games
-      responses:
-        "200":
-          description: Score stats
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ScoreStats"
-
-  /achievements:
-    get:
-      operationId: listAchievements
-      tags: [achievements]
-      summary: List all available achievements
-      responses:
-        "200":
-          description: All achievements
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Achievement"
-
-  /progress:
-    get:
-      operationId: getProgress
-      tags: [progress]
-      summary: Get player progress summary
-      parameters:
-        - name: playerName
-          in: query
-          required: false
-          schema:
-            type: string
-      responses:
-        "200":
-          description: Player progress
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/PlayerProgress"
-    post:
-      operationId: saveProgress
-      tags: [progress]
-      summary: Save player progress
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ProgressInput"
-      responses:
-        "201":
-          description: Progress saved
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/PlayerProgress"
-
-  /progress/missions:
-    get:
-      operationId: listMissions
-      tags: [progress]
-      summary: List all robotics missions with completion status
-      responses:
-        "200":
-          description: Missions list
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Mission"
-
 components:
   schemas:
     HealthStatus:
@@ -162,113 +34,3 @@ components:
       required:
         - status
 
-    Score:
-      type: object
-      required: [id, playerName, game, score, createdAt]
-      properties:
-        id:
-          type: integer
-        playerName:
-          type: string
-        game:
-          type: string
-        score:
-          type: integer
-        createdAt:
-          type: string
-
-    ScoreInput:
-      type: object
-      required: [playerName, game, score]
-      properties:
-        playerName:
-          type: string
-        game:
-          type: string
-        score:
-          type: integer
-
-    ScoreStats:
-      type: object
-      required: [totalPlayers, totalGamesPlayed, topGame, averageScore]
-      properties:
-        totalPlayers:
-          type: integer
-        totalGamesPlayed:
-          type: integer
-        topGame:
-          type: string
-        averageScore:
-          type: integer
-
-    Achievement:
-      type: object
-      required: [id, title, description, icon, category, points]
-      properties:
-        id:
-          type: integer
-        title:
-          type: string
-        description:
-          type: string
-        icon:
-          type: string
-        category:
-          type: string
-        points:
-          type: integer
-
-    PlayerProgress:
-      type: object
-      required: [id, playerName, totalPoints, level, missionsCompleted, gamesPlayed, animationsCreated]
-      properties:
-        id:
-          type: integer
-        playerName:
-          type: string
-        totalPoints:
-          type: integer
-        level:
-          type: integer
-        missionsCompleted:
-          type: integer
-        gamesPlayed:
-          type: integer
-        animationsCreated:
-          type: integer
-
-    ProgressInput:
-      type: object
-      required: [playerName]
-      properties:
-        playerName:
-          type: string
-        totalPoints:
-          type: integer
-        level:
-          type: integer
-        missionsCompleted:
-          type: integer
-        gamesPlayed:
-          type: integer
-        animationsCreated:
-          type: integer
-
-    Mission:
-      type: object
-      required: [id, title, description, difficulty, world, starCount, isUnlocked]
-      properties:
-        id:
-          type: integer
-        title:
-          type: string
-        description:
-          type: string
-        difficulty:
-          type: string
-        world:
-          type: string
-        starCount:
-          type: integer
-        isUnlocked:
-          type: boolean
